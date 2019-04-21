@@ -59,6 +59,11 @@ func main() {
 
 	fmt.Printf("%s", emojiCountPerUserText)
 
+	startDateText := firstOfMonth.Format("1月2日")
+	endDateText := now.Format("1月2日")
+	bazaruText := startDateText + "から" + endDateText + "までのリアクションでござ～る。"
+	emojiCountPerUserText += bazaruText
+
 	postMsg(emojiCountPerUserText, channelID, botToken)
 	fmt.Printf("SUCCESS data collected from %s to %s\n", firstOfMonth, now)
 }
