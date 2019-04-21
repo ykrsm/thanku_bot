@@ -1,8 +1,11 @@
 FILE=prod_ip
 IP=`cat $(FILE)`
 
-run:
-	./main -p /mnt/ns/Schedule/current/[^~].xlxs
+prod:
+	./main -p
+
+test:
+	./main -d
 
 dev:
 	env GOOS=linux GOARCH=386 go build -o main && docker-compose up --build
@@ -14,7 +17,3 @@ deploy:
 	env GOOS=linux GOARCH=386 go build -o main
 	scp ./main slack@$(IP):/home/slack/roster-bot  
 	echo Deployed source to IP: $(IP)
-
-test:
-	go clean -testcache
-	go test -v ./...

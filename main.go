@@ -29,7 +29,7 @@ func main() {
 	switch arg {
 	case "-p":
 		fmt.Printf("PRODUCTION MODE\n")
-		channelID = os.Getenv("DEV_CHANNEL")
+		channelID = os.Getenv("PROD_CHANNEL")
 
 	case "-d":
 		fmt.Printf("DEVELOPMENT MODE\n")
