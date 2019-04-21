@@ -46,9 +46,10 @@ func main() {
 	currentLocation := now.Location()
 	// firstOfMonth := time.Date(currentYear, currentMonth, 1, 0, 0, 0, 0, currentLocation)
 	firstOfMonth := time.Date(currentYear, currentMonth-1, 1, 0, 0, 0, 0, currentLocation)
+	lastOfMonth := firstOfMonth.AddDate(0, 1, -1)
 
 	startTs := firstOfMonth.Unix()
-	endTs := time.Now().Unix()
+	endTs := lastOfMonth.Unix()
 
 	emojiCountPerUser := make(map[string]map[string]int)
 
@@ -61,7 +62,7 @@ func main() {
 	fmt.Printf("%s", emojiCountPerUserText)
 
 	startDateText := firstOfMonth.Format("1月2日")
-	endDateText := now.Format("1月2日")
+	endDateText := lastOfMonth.Format("1月2日")
 	bazaruText := startDateText + "から" + endDateText + "までのリアクションでござ～る。\n"
 	emojiCountPerUserText = bazaruText + emojiCountPerUserText
 
