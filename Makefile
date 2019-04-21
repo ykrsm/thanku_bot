@@ -15,5 +15,5 @@ deploy:
 	git pull
 	git status
 	env GOOS=linux GOARCH=386 go build -o main
-	scp ./main slack@$(IP):/home/slack/roster-bot  
+	scp ./main slack@$(IP):/home/slack/thanku-bot  
 	echo Deployed source to IP: $(IP)
