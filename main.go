@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -12,93 +11,54 @@ import (
 
 func main() {
 
+	if len(os.Args) != 2 {
+		log.Fatal("Not enough argument\n")
+	}
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
+	botToken := os.Getenv("BOT_TOKEN")
+	oauthToken := os.Getenv("OAUTH_TOKEN")
+
 	// os.Args[1] specify if its prod or dev
-	// os.Args[2] is excel file name
-	// os.Args[3] specify txt file contains names
-
 	arg := os.Args[1]
-	var hookURL string
-
+	var channelID string
 	switch arg {
 	case "-p":
-		fmt.Printf("PRODUCTION\n")
-		hookURL = os.Getenv("PROD_WEBHOOK_URL")
+		fmt.Printf("PRODUCTION MODE\n")
+		channelID = os.Getenv("DEV_CHANNEL")
 
-	case "-d1":
-		fmt.Printf("DEVELOPMENT1\n")
-		hookURL = os.Getenv("DEV1_WEBHOOK_URL")
-
-	case "-d2":
-		fmt.Printf("DEVELOPMENT2\n")
-		hookURL = os.Getenv("DEV2_WEBHOOK_URL")
-
-	case "-t":
-		fmt.Printf("TEST\n")
-		hookURL = os.Getenv("TEST_WEBHOOK_URL")
+	case "-d":
+		fmt.Printf("DEVELOPMENT MODE\n")
+		channelID = os.Getenv("DEV_CHANNEL")
 
 	default:
 		os.Exit(1)
 	}
 
-	var fileName string
-	var namelistFileName string
-	if len(os.Args) == 4 {
-		fileName = os.Args[2]
-		namelistFileName = os.Args[3]
-	} else {
-		log.Fatal("Not enough argument\n")
+	channelIDs := getChannelIDs(botToken)
+
+	now := time.Now()
+	currentYear, currentMonth, _ := now.Date()
+	currentLocation := now.Location()
+	firstOfMonth := time.Date(currentYear, currentMonth-1, 1, 0, 0, 0, 0, currentLocation)
+
+	startTs := firstOfMonth.Unix()
+	endTs := time.Now().Unix()
+
+	emojiCountPerUser := make(map[string]map[string]int)
+
+	for _, channelID := range channelIDs {
+		emojiCountPerUser = getReaction(emojiCountPerUser, channelID, oauthToken, startTs, endTs)
 	}
 
-	t := time.Now()
-	fmt.Printf("Current time:\t%v\n", t)
-	year, month, day := t.Date()
+	emojiCountPerUserText := fmtReactions(emojiCountPerUser, botToken)
 
-	// parse txt file and make an array of names
-	names := parseNameFile(namelistFileName)
+	fmt.Printf("%s", emojiCountPerUserText)
 
-	fmt.Printf("File name: %s\n", fileName)
-	fmt.Printf("Names File: %v\n", namelistFileName)
-	fmt.Printf("Names: %v\n", names)
-
-	roster := Roster{Date: t}
-	// res := makeRoster(int(month), day, fileName)
-	res := runRoster(year, int(month), day, fileName, roster, names)
-
-	// Making date string in Japnaese
-	wdays := [...]string{"日", "月", "火", "水", "木", "金", "土"}
-	weekDayJP := wdays[t.Weekday()]
-	dateJP := t.Format("1月2日 (" + weekDayJP + ")")
-
-	text := dateJP + " の勤務表でござ~る\n\n" + res
-	postMessage(text, hookURL)
-}
-
-func runRoster(year, month, day int, fileName string, roster Roster, names []string) string {
-	r := fillRoster(year, month, day, fileName, roster, names)
-
-	return r.String()
-}
-
-func parseNameFile(fileName string) (names []string) {
-
-	// Open the file.
-	f, err := os.Open(fileName)
-	if err != nil {
-		log.Fatal("Cannot open " + fileName)
-	}
-	// Create a new Scanner for the file.
-	scanner := bufio.NewScanner(f)
-	// Loop over all lines in the file and print them.
-	for scanner.Scan() {
-		line := scanner.Text()
-		names = append(names, line)
-	}
-
-	f.Close()
-	return names
+	postMsg(emojiCountPerUserText, channelID, botToken)
+	fmt.Printf("SUCCESS data collected from %s to %s\n", firstOfMonth, now)
 }

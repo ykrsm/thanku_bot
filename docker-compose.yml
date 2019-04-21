@@ -2,7 +2,7 @@ version: '3'
 
 services:
   api:
-    container_name: go-roster-bot
+    container_name: go-thanku-bot
     build: ./
     ports:
             - 3000:3000 # expose ports - HOST:CONTAINER

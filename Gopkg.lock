@@ -2,20 +2,12 @@
 
 
 [[projects]]
-  digest = "1:4b94878e125f31ec67c892ecfe38c13211da40653281588598218f807ae72bf7"
-  name = "github.com/360EntSecGroup-Skylar/excelize"
+  digest = "1:7b5c6e2eeaa9ae5907c391a91c132abfd5c9e8a784a341b5625e750c67e6825d"
+  name = "github.com/gorilla/websocket"
   packages = ["."]
   pruneopts = "UT"
-  revision = "eb62256d165607c6877ce88efbba10c119137b3d"
-  version = "v1.3.0"
-
-[[projects]]
-  branch = "master"
-  digest = "1:b781c6ce2a81ea819878fe0e907182aa2d3e55629408a9fdbfdff62789f93614"
-  name = "github.com/bluele/slack"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "b4b4d354a079fbf4bd948faad01b32cecb2ffe03"
+  revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
+  version = "v1.4.0"
 
 [[projects]]
   digest = "1:ecd9aa82687cf31d1585d4ac61d0ba180e42e8a6182b85bd785fcca8dfeefc1b"
@@ -26,21 +18,30 @@
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:e60f2f1cd2e8dfdea48c2440c303d103266e754ab1d8b75796a4e4caddb7a68c"
-  name = "github.com/tealeg/xlsx"
+  digest = "1:7711bc85fa91b919713feda232ffe0bd4ebb0e8426b9c0de6c6f476e0eb9b7c2"
+  name = "github.com/nlopes/slack"
+  packages = [
+    ".",
+    "slackutilsx",
+  ]
+  pruneopts = "UT"
+  revision = "a7deeca7935c178aa865249bab511daf816288ba"
+  version = "v0.5.0"
+
+[[projects]]
+  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
+  name = "github.com/pkg/errors"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8be35264fa75a1bbe954ce51eba04f273e2c59e5"
-  version = "v1.0.3"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/360EntSecGroup-Skylar/excelize",
-    "github.com/bluele/slack",
     "github.com/joho/godotenv",
-    "github.com/tealeg/xlsx",
+    "github.com/nlopes/slack",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
