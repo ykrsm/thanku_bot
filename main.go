@@ -44,6 +44,7 @@ func main() {
 	now := time.Now()
 	currentYear, currentMonth, _ := now.Date()
 	currentLocation := now.Location()
+	// firstOfMonth := time.Date(currentYear, currentMonth, 1, 0, 0, 0, 0, currentLocation)
 	firstOfMonth := time.Date(currentYear, currentMonth-1, 1, 0, 0, 0, 0, currentLocation)
 
 	startTs := firstOfMonth.Unix()
